@@ -1,9 +1,17 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Building2, Zap, Wind, Paintbrush, Users, Award, ThumbsUp, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Layout from "@/components/Layout";
+
+import projectImg1 from "@/assets/project-hdfc-exterior.jpg";
+import projectImg2 from "@/assets/project-hdfc-front.jpg";
+import projectImg3 from "@/assets/project-bank-interior.jpg";
+import projectImg4 from "@/assets/project-electrical-panel.jpg";
+
+const slideshowImages = [projectImg1, projectImg2, projectImg3, projectImg4];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -22,13 +30,22 @@ const services = [
 ];
 
 const stats = [
-  { value: "20+", label: "Years Experience" },
-  { value: "200+", label: "Projects Delivered" },
-  { value: "7+", label: "PSU Certifications" },
+  { value: "25+", label: "Years Experience" },
+  { value: "500+", label: "Projects Delivered" },
+  { value: "11+", label: "PSU Certifications" },
   { value: "100%", label: "Client Satisfaction" },
 ];
 
 const Index = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slideshowImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Layout>
       {/* Hero */}
@@ -88,9 +105,31 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services */}
-      <section className="py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Services with Slideshow Background */}
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        {/* Slideshow background */}
+        <div className="absolute inset-0">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2 }}
+              className="absolute inset-0"
+            >
+              <img
+                src={slideshowImages[currentSlide]}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+          </AnimatePresence>
+          {/* Dark overlay for readability */}
+          <div className="absolute inset-0 bg-foreground/80 backdrop-blur-sm" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -100,7 +139,7 @@ const Index = () => {
             className="text-center mb-14"
           >
             <p className="text-sm font-semibold uppercase tracking-[0.15em] text-primary mb-2">What We Do</p>
-            <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: "var(--font-heading)" }}>Our Services</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-background" style={{ fontFamily: "var(--font-heading)" }}>Our Services</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -113,7 +152,7 @@ const Index = () => {
                 custom={i}
                 variants={fadeUp}
               >
-                <Card className="h-full hover:shadow-lg transition-shadow border-border/50 group">
+                <Card className="h-full hover:shadow-lg transition-shadow border-border/50 group bg-background/95 backdrop-blur-sm">
                   <CardContent className="p-6 text-center">
                     <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                       <s.icon className="h-6 w-6" />
@@ -179,11 +218,18 @@ const Index = () => {
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
               Get in touch with us to discuss your requirements. We're here to help bring your vision to life.
             </p>
-            <Link to="/contact">
-              <Button size="lg" className="gap-2 text-base">
-                Contact Us <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link to="/contact">
+                <Button size="lg" className="gap-2 text-base">
+                  Contact Us <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+              <a href="tel:+919424748455">
+                <Button size="lg" variant="outline" className="gap-2 text-base">
+                  Call +91 94247 48455
+                </Button>
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>

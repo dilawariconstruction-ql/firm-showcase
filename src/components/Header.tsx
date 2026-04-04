@@ -45,10 +45,10 @@ const Header = () => {
               {link.label}
             </Link>
           ))}
-          <a href="tel:+919425053868" className="ml-2">
+          <a href="tel:+919424748455" className="ml-2">
             <Button size="sm" variant="outline" className="gap-2">
               <Phone className="h-3.5 w-3.5" />
-              Call Us
+              +91 94247 48455
             </Button>
           </a>
         </nav>
