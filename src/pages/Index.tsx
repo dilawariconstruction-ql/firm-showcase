@@ -126,7 +126,7 @@ const Index = () => {
             </motion.div>
           </AnimatePresence>
           {/* Dark overlay for readability */}
-          <div className="absolute inset-0 bg-foreground/80 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-foreground/60" />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
